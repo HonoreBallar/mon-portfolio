@@ -6,7 +6,7 @@ import Pipeline from "@/components/Pipeline";
 import Timeline from "@/components/Timeline";
 import Contact from "@/components/Contact";
 import { Starfield } from "@/components/ui";
-import { getPortfolio } from "@/lib/api";
+import { getPortfolio } from "@/lib/portfolio";
 
 export default async function Home() {
   const content = await getPortfolio();

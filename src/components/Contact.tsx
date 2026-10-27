@@ -2,7 +2,6 @@
 
 import { useState, type FormEvent } from "react";
 import type { Portfolio } from "@/lib/data";
-import { API_URL } from "@/lib/env";
 import { Reveal } from "./ui";
 
 const field =
@@ -28,7 +27,7 @@ export default function Contact({ email, socials }: { email: string; socials: Po
     setError("");
 
     try {
-      const res = await fetch(`${API_URL}/api/contact`, {
+      const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json", Accept: "application/json" },
         body: JSON.stringify(Object.fromEntries(new FormData(form))),

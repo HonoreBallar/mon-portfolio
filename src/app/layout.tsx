@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="fr" className={`${grotesk.variable} ${mono.variable} antialiased`}>
+    <html lang="fr" data-scroll-behavior="smooth" className={`${grotesk.variable} ${mono.variable} antialiased`}>
       <body>{children}</body>
     </html>
   );

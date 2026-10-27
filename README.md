@@ -1,36 +1,92 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Portfolio — Amounan Kouadjo Honoré
 
-## Getting Started
+Portfolio et back-office dans une seule application **Next.js 16** (App Router, Cache Components) :
 
-First, run the development server:
+- **Site public** : contenu lu dans PostgreSQL et mis en cache (`"use cache"`, tag `portfolio`), avec un contenu de secours dans `src/lib/data.ts` si la base est injoignable.
+- **Admin** sur `/admin` : connexion par email et mot de passe, gestion des projets, du parcours, de l'expertise, des technologies, des chiffres clés, du pipeline, des réseaux sociaux, des réglages et des messages de contact. Chaque modification met le site à jour immédiatement (`updateTag`).
+- **Formulaire de contact** : `POST /api/contact`, validation zod, piège à robots, 5 messages par heure et par IP.
+- **Stack** : PostgreSQL + Drizzle ORM, sessions JWT signées (jose), bcrypt, Docker, GitHub Actions.
+
+## Développement local
+
+Prérequis : Node.js 24 et Docker.
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+cp .env.example .env.local        # puis renseigner SESSION_SECRET (openssl rand -hex 32)
+docker compose up -d db           # PostgreSQL sur le port 5433
+npm run db:migrate                # crée les tables
+npm run admin:create -- vous@exemple.com
+npm run dev                       # http://localhost:3000 — admin sur /admin
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Tout en Docker (image de production)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+docker compose up -d --build      # db + migrations + application sur http://localhost:3000
+docker compose logs -f app
+docker compose down               # les données restent dans le volume db_data
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Scripts
 
-## Learn More
+| Commande | Rôle |
+|---|---|
+| `npm run dev` / `build` / `start` | Next.js |
+| `npm run lint` / `typecheck` | ESLint, TypeScript |
+| `npm run db:generate` | Crée une migration SQL après une modification de `src/db/schema.ts` |
+| `npm run db:migrate` | Applique les migrations de `drizzle/` sur `DATABASE_URL` |
+| `npm run db:studio` | Explorateur de la base (Drizzle Studio) |
+| `npm run admin:create -- email` | Crée un admin ou réinitialise son mot de passe |
 
-To learn more about Next.js, take a look at the following resources:
+## Variables d'environnement
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| Variable | Rôle |
+|---|---|
+| `DATABASE_URL` | Connexion PostgreSQL |
+| `SESSION_SECRET` | Signe le cookie de session admin (32 caractères minimum) |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Structure
 
-## Deploy on Vercel
+```
+src/app/page.tsx                 site public
+src/app/api/contact/route.ts     formulaire de contact
+src/app/admin/login/             connexion
+src/app/admin/(panel)/           admin : tableau de bord, CRUD générique, réglages, messages
+src/lib/admin/resources.ts       champs éditables de chaque type de contenu
+src/lib/portfolio.ts             lecture du contenu + cache
+src/lib/auth.ts                  sessions et contrôle d'accès
+src/db/schema.ts                 schéma Drizzle (tables reprises de l'ancien backend Symfony)
+src/proxy.ts                     redirection vers /admin/login sans cookie de session
+drizzle/                         migrations SQL versionnées
+Dockerfile, compose.yaml         image standalone + image de migration
+.github/workflows/ci.yml         CI
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Pour ajouter un champ ou un type de contenu : modifier `src/db/schema.ts`, lancer `npm run db:generate`,
+puis déclarer le champ dans `src/lib/admin/resources.ts` (et la table dans `src/lib/admin/tables.ts`).
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## CI (GitHub Actions)
+
+À chaque push et pull request :
+
+1. **quality** : lint, types, migrations sur une base PostgreSQL vide, vérification qu'aucune migration ne manque, build Next.js.
+2. **docker** : build de l'image de production et de l'image de migration (cache GitHub Actions).
+3. **migrate-production** (push sur `master` uniquement) : applique les migrations sur la base de production si le secret
+   `DATABASE_URL` est défini dans l'environnement GitHub `production`.
+
+## Déploiement : Vercel + Neon
+
+1. **Base** : sur Vercel → **Storage** → **Neon** (offre gratuite), ou directement sur neon.tech.
+   Récupère la chaîne de connexion **poolée** (`...-pooler...`).
+2. **Tables** : `DATABASE_URL="<url neon>" npm run db:migrate`.
+3. **Contenu existant** (depuis la base locale) :
+   ```bash
+   docker compose exec -T db pg_dump -U app -d app --data-only --no-owner --schema=public | psql "<url neon>"
+   ```
+   Sinon, crée seulement un admin : `DATABASE_URL="<url neon>" npm run admin:create -- vous@exemple.com`.
+4. **Vercel** : importe le dépôt GitHub, puis ajoute `DATABASE_URL` et `SESSION_SECRET` (nouvelle valeur, `openssl rand -hex 32`).
+   Si la base a été créée depuis Vercel, `DATABASE_URL` est déjà renseignée.
+5. **Migrations automatiques** (facultatif) : GitHub → Settings → Environments → `production` → secret `DATABASE_URL`.
+
+Le site est alors sur `https://<projet>.vercel.app` et l'admin sur `https://<projet>.vercel.app/admin`.

@@ -174,7 +174,7 @@ export const SOCIALS = [
   { label: "LinkedIn", href: "https://www.linkedin.com/in/honor%C3%A9-amounan-38816913a" },
 ];
 
-/** Shape of GET /api/portfolio on the Symfony backend */
+/** Content of the site, as returned by getPortfolio() */
 export type Portfolio = {
   contactEmail: string;
   roles: string[];
@@ -187,7 +187,7 @@ export type Portfolio = {
   socials: typeof SOCIALS;
 };
 
-/** Content shown when the backend is unreachable */
+/** Content shown when the database is unreachable */
 export const FALLBACK_PORTFOLIO: Portfolio = {
   contactEmail: "amounahonore@gmail.com",
   roles: ROLES,
