@@ -1,0 +1,94 @@
+"use client";
+
+import { useState } from "react";
+import { CATEGORIES, type Category, type Portfolio } from "@/lib/data";
+import { Reveal, SectionHeading, Tag } from "./ui";
+
+const hasLink = (href: string) => href !== "" && href !== "#";
+
+export default function Projects({ projects }: { projects: Portfolio["projects"] }) {
+  // Only offer filters for categories that have at least one project
+  const FILTERS: ("Tous" | Category)[] = ["Tous", ...CATEGORIES.filter((c) => projects.some((p) => p.category === c))];
+  const [filter, setFilter] = useState<(typeof FILTERS)[number]>("Tous");
+  const list = projects.filter((p) => filter === "Tous" || p.category === filter);
+
+  return (
+    <section id="projets" className="relative scroll-mt-20 pt-[160px]">
+      <div className="container-x">
+        <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
+          <SectionHeading kicker="02 — Projets">
+            Des projets qui tournent
+            <br className="hidden sm:block" /> en production.
+          </SectionHeading>
+
+          <Reveal className="flex flex-wrap gap-2" delay={100}>
+            {FILTERS.map((f) => (
+              <button
+                key={f}
+                onClick={() => setFilter(f)}
+                className={`h-11 rounded-full px-[18px] font-mono text-[14px] transition ${
+                  filter === f
+                    ? "bg-cyan font-medium text-[#04121a] shadow-[0_0_20px_rgba(34,211,238,0.35)]"
+                    : "border border-white/10 bg-white/[0.02] text-[#d5d9e4] hover:border-cyan/40 hover:text-cyan"
+                }`}
+              >
+                {f}
+              </button>
+            ))}
+          </Reveal>
+        </div>
+
+        <div className="mt-[48px] grid gap-7 md:grid-cols-2 lg:grid-cols-3">
+          {list.map((p, i) => (
+            <Reveal key={p.title} delay={(i % 3) * 120}>
+              <article className="group flex h-full flex-col overflow-hidden rounded-[20px] border border-white/[0.08] bg-[#090b15] transition duration-500 hover:-translate-y-1.5 hover:border-white/15">
+                <div className="grid-bg relative h-[230px] overflow-hidden border-b border-white/[0.06] bg-[#0b0e1c]">
+                  <div
+                    aria-hidden
+                    className="absolute left-1/2 top-[38%] h-[300px] w-[300px] -translate-x-1/2 -translate-y-1/2 rounded-full transition duration-700 group-hover:scale-125"
+                    style={{
+                      background: `radial-gradient(circle, rgba(${p.glow},0.55), rgba(${p.glow},0.12) 45%, transparent 70%)`,
+                    }}
+                  />
+                  <span className="absolute left-[18px] top-[11px] rounded-full border border-white/10 bg-[#070910]/90 px-3 py-[5px] font-mono text-[12px] font-semibold text-text">
+                    {p.category}
+                  </span>
+                  <span className="absolute left-1/2 top-[88px] -translate-x-1/2 whitespace-nowrap rounded-md border border-white/15 bg-black/20 px-4 py-2 font-mono text-[15px] text-[#c9cede]">
+                    {p.tags[0]}
+                  </span>
+                </div>
+
+                <div className="flex flex-1 flex-col p-7">
+                  <h3 className="text-[25.5px] font-bold leading-[1.22] tracking-tight text-text">{p.title}</h3>
+                  <p className="mt-3 text-[16px] leading-[1.55] text-muted">{p.description}</p>
+                  <div className="mt-3.5 flex flex-wrap gap-2">
+                    {p.tags.map((t) => (
+                      <Tag key={t}>{t}</Tag>
+                    ))}
+                  </div>
+                  {(hasLink(p.demo) || hasLink(p.source)) && (
+                    <div className="mt-auto flex items-center gap-[22px] pb-4 pt-8">
+                      {hasLink(p.demo) && (
+                        <a href={p.demo} className="group/link inline-flex items-center gap-2 text-[16px] font-semibold text-cyan">
+                          Démo live
+                          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" className="transition group-hover/link:-translate-y-0.5 group-hover/link:translate-x-0.5">
+                            <path d="M7 17L17 7M9 7h8v8" />
+                          </svg>
+                        </a>
+                      )}
+                      {hasLink(p.source) && (
+                        <a href={p.source} className="text-[16px] text-[#c3c8d6] transition hover:text-text">
+                          Code source
+                        </a>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </article>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
