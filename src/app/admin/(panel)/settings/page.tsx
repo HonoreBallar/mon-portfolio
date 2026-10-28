@@ -13,7 +13,7 @@ export default async function Settings() {
   const [settings] = await getDb().select().from(tables.siteSettings).limit(1);
 
   return (
-    <div className="max-w-[760px]">
+    <div className="w-full">
       <h1 className="text-[30px] font-bold tracking-tight text-text">Réglages</h1>
       <div className={`${card} mt-8 p-6 sm:p-8`}>
         <ResourceForm

@@ -20,7 +20,7 @@ export default async function Dashboard() {
   ]);
 
   return (
-    <div className="max-w-[1000px]">
+    <div className="w-full">
       <h1 className="text-[30px] font-bold tracking-tight text-text">Tableau de bord</h1>
       <p className="mt-1 text-[15px] text-muted">Connecté en tant que {admin.email}</p>
 

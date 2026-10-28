@@ -180,14 +180,14 @@ export default function Hero({
               </svg>
             </a>
             <a
-              href="/cv.pdf"
-              download
+              href="#contact"
               className="inline-flex h-[53px] items-center gap-3 rounded-[10px] border border-white/15 bg-white/[0.02] px-[27px] text-[16px] font-semibold text-text transition hover:-translate-y-0.5 hover:border-cyan/50 hover:bg-cyan/5"
             >
               <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M12 3v12M7 10l5 5 5-5M5 21h14" />
+                <rect x="3" y="5" width="18" height="14" rx="2" />
+                <path d="M3 7l9 6 9-6" />
               </svg>
-              Télécharger le CV
+              Me contacter
             </a>
           </div>
 

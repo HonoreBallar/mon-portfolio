@@ -15,7 +15,7 @@ export default async function NewItem({ params }: PageProps<"/admin/[resource]/n
   if (!resource) notFound();
 
   return (
-    <div className="max-w-[760px]">
+    <div className="w-full">
       <h1 className="text-[30px] font-bold tracking-tight text-text">Ajouter : {resource.singular}</h1>
       <div className={`${card} mt-8 p-6 sm:p-8`}>
         <ResourceForm

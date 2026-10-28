@@ -21,7 +21,7 @@ export default async function MessageDetail({ params }: PageProps<"/admin/messag
   if (!m) notFound();
 
   return (
-    <div className="max-w-[760px]">
+    <div className="w-full">
       <Link href="/admin/messages" className="font-mono text-[13px] text-dim hover:text-cyan">
         ← Messages
       </Link>

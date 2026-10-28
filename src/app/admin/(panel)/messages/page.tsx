@@ -14,7 +14,7 @@ export default async function Messages() {
   const messages = await getDb().select().from(tables.contactMessages).orderBy(desc(tables.contactMessages.createdAt));
 
   return (
-    <div className="max-w-[1000px]">
+    <div className="w-full">
       <h1 className="text-[30px] font-bold tracking-tight text-text">Messages</h1>
       <div className={`${card} mt-8 divide-y divide-white/[0.06]`}>
         {messages.length === 0 && <p className="p-5 text-[15px] text-muted">Aucun message pour l’instant.</p>}

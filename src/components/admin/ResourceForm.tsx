@@ -68,9 +68,10 @@ export default function ResourceForm({
   const values: FormValues = state?.values && !state.saved ? { ...initial, ...state.values } : initial;
 
   return (
-    <form action={formAction} className="flex flex-col gap-6">
+    // Two columns on wide screens; long texts keep the full width
+    <form action={formAction} className="grid grid-cols-1 gap-x-8 gap-y-6 lg:grid-cols-2">
       {fields.map((f) => (
-        <div key={f.name} className="flex flex-col gap-2">
+        <div key={f.name} className={`flex flex-col gap-2 ${f.type === "textarea" ? "lg:col-span-2" : ""}`}>
           <label htmlFor={f.name} className="text-[14px] font-medium text-[#c3c8d6]">
             {f.label}
             {f.required && <span className="text-cyan"> *</span>}
@@ -85,7 +86,7 @@ export default function ResourceForm({
         </div>
       ))}
 
-      <div className="flex flex-wrap items-center gap-3 pt-2">
+      <div className="flex flex-wrap items-center gap-3 pt-2 lg:col-span-2">
         <button type="submit" disabled={pending} className={primaryButton}>
           {pending ? "Enregistrement…" : submitLabel}
         </button>

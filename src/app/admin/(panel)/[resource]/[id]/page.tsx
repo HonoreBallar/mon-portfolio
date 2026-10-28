@@ -34,7 +34,7 @@ export default async function EditItem({ params }: PageProps<"/admin/[resource]/
   );
 
   return (
-    <div className="max-w-[760px]">
+    <div className="w-full">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <h1 className="text-[30px] font-bold tracking-tight text-text">Modifier : {resource.singular}</h1>
         <ConfirmButton action={deleteItem.bind(null, key, id)} message="Supprimer définitivement cet élément ?">

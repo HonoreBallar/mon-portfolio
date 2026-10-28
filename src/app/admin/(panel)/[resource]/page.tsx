@@ -27,7 +27,7 @@ export default async function ResourceList({ params }: PageProps<"/admin/[resour
   const labels = Object.fromEntries(resource.fields.map((f) => [f.name, f.label]));
 
   return (
-    <div className="max-w-[1000px]">
+    <div className="w-full">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <h1 className="text-[30px] font-bold tracking-tight text-text">{resource.label}</h1>
         <Link href={`/admin/${key}/new`} className={primaryButton}>
