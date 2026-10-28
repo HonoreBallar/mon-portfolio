@@ -77,6 +77,15 @@ export const timelineEntries = pgTable("timeline_entry", {
   position: position(),
 });
 
+// Shown under the expertise card of the same category, with a link to the issuer's verification page
+export const certifications = pgTable("certification", {
+  id: id(),
+  title: varchar("title", { length: 150 }).notNull(),
+  category: varchar("category", { length: 20 }).notNull(),
+  verifyUrl: varchar("verify_url", { length: 255 }).notNull(),
+  position: position(),
+});
+
 export const socialLinks = pgTable("social_link", {
   id: id(),
   label: varchar("label", { length: 50 }).notNull(),

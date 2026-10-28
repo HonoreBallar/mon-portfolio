@@ -9,7 +9,7 @@ export const ROLES = [
 export const STATS = [
   { value: "3+", label: "ans d'expérience" },
   { value: "5", label: "projets majeurs livrés" },
-  { value: "4", label: "certifications IBM & Coursera" },
+  { value: "6", label: "certifications IBM & Coursera" },
 ];
 
 export const STACK = [
@@ -52,7 +52,7 @@ export const EXPERTISE: {
   },
   {
     title: "Intelligence artificielle",
-    text: "Systèmes RAG en production pour interroger un corpus documentaire en langage naturel : ingestion, chunking, embeddings, recherche sémantique et intégration de LLM via API. Conception d'agents IA en cours.",
+    text: "Systèmes RAG en production pour interroger un corpus documentaire en langage naturel : ingestion, chunking, embeddings, recherche sémantique et intégration de LLM via API. Conception d'agents IA avec LangGraph, CrewAI et MCP.",
     tags: ["LLM / RAG", "Python / FastAPI", "Embeddings"],
     icon: "chip",
     color: "#a78bfa",
@@ -164,13 +164,22 @@ export const TIMELINE = [
   {
     period: "2026",
     title: "Certifications IBM · Coursera",
-    text: "IBM RAG and Agentic AI, IBM DevOps, Cloud and Agile Foundations, IBM Front-End Developer, et Mobile App Development, UX and Publishing (SkillUp).",
+    text: "Cinq certificats professionnels IBM (RAG and Agentic AI, Full Stack, Front-End, Back-End, DevOps and Software Engineering) et la spécialisation Mobile App Development, UX and Publishing (SkillUp).",
   },
   {
     period: "2014 — 2019",
     title: "Licence pro Génie Logiciel · CESA Plateau",
     text: "Licence professionnelle en Génie Logiciel (2019), après un BTS Informatique développeur d'application (2015).",
   },
+];
+
+export const CERTIFICATIONS: { title: string; category: Category; url: string }[] = [
+  { title: "IBM Full Stack Software Developer", category: "Fullstack", url: "https://coursera.org/verify/professional-cert/FE7UMWAOU79A" },
+  { title: "IBM Front-End Developer", category: "Fullstack", url: "https://coursera.org/verify/professional-cert/BJFXK69ZHTJ2" },
+  { title: "IBM Back-End Development", category: "Fullstack", url: "https://coursera.org/verify/professional-cert/WR3ZHRYEZN50" },
+  { title: "Mobile App Development (SkillUp)", category: "Fullstack", url: "https://coursera.org/verify/specialization/UY91FBCWSVF0" },
+  { title: "IBM RAG and Agentic AI", category: "IA", url: "https://coursera.org/verify/professional-cert/IV0K4EX4DID8" },
+  { title: "IBM DevOps and Software Engineering", category: "DevOps", url: "https://coursera.org/verify/professional-cert/JQOT3M37G8SO" },
 ];
 
 export const SOCIALS = [
@@ -188,6 +197,7 @@ export type Portfolio = {
   projects: typeof PROJECTS;
   pipeline: typeof PIPELINE;
   timeline: typeof TIMELINE;
+  certifications: typeof CERTIFICATIONS;
   socials: typeof SOCIALS;
 };
 
@@ -201,5 +211,6 @@ export const FALLBACK_PORTFOLIO: Portfolio = {
   projects: PROJECTS,
   pipeline: PIPELINE,
   timeline: TIMELINE,
+  certifications: CERTIFICATIONS,
   socials: SOCIALS,
 };

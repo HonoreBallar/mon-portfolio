@@ -84,6 +84,25 @@ export const RESOURCES: Resource[] = [
     ],
   },
   {
+    key: "certifications",
+    label: "Certifications",
+    singular: "certification",
+    columns: ["title", "category"],
+    fields: [
+      { name: "title", label: "Titre", type: "text", required: true, max: 150 },
+      {
+        name: "category",
+        label: "Catégorie",
+        type: "select",
+        required: true,
+        options: CATEGORIES,
+        help: "Affichée sous la carte Expertise correspondante (Fullstack, IA ou DevOps).",
+      },
+      { name: "verifyUrl", label: "Lien de vérification", type: "url", required: true, help: "Ex. https://coursera.org/verify/..." },
+      position,
+    ],
+  },
+  {
     key: "technologies",
     label: "Technologies",
     singular: "technologie",

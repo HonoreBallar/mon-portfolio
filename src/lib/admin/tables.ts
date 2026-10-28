@@ -12,5 +12,6 @@ export const RESOURCE_TABLES: Record<string, ContentTable> = {
   technologies: tables.technologies,
   stats: tables.stats,
   pipeline: tables.pipelineSteps,
+  certifications: tables.certifications,
   socials: tables.socialLinks,
 };

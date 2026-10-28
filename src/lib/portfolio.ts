@@ -23,7 +23,7 @@ export async function getPortfolio(locale: Locale): Promise<Portfolio> {
   try {
     const db = getDb();
 
-    const [settings, stats, stack, expertise, projects, pipeline, timeline, socials] = await Promise.all([
+    const [settings, stats, stack, expertise, projects, pipeline, timeline, certifications, socials] = await Promise.all([
       db.select().from(tables.siteSettings).limit(1),
       db.select().from(tables.stats).orderBy(asc(tables.stats.position), asc(tables.stats.id)),
       db.select().from(tables.technologies).orderBy(asc(tables.technologies.position), asc(tables.technologies.id)),
@@ -35,6 +35,7 @@ export async function getPortfolio(locale: Locale): Promise<Portfolio> {
         .orderBy(asc(tables.projects.position), asc(tables.projects.id)),
       db.select().from(tables.pipelineSteps).orderBy(asc(tables.pipelineSteps.position), asc(tables.pipelineSteps.id)),
       db.select().from(tables.timelineEntries).orderBy(asc(tables.timelineEntries.position), asc(tables.timelineEntries.id)),
+      db.select().from(tables.certifications).orderBy(asc(tables.certifications.position), asc(tables.certifications.id)),
       db.select().from(tables.socialLinks).orderBy(asc(tables.socialLinks.position), asc(tables.socialLinks.id)),
     ]);
 
@@ -72,6 +73,7 @@ export async function getPortfolio(locale: Locale): Promise<Portfolio> {
         title: pick(locale, r.title, r.titleEn),
         text: pick(locale, r.text, r.textEn),
       })),
+      certifications: certifications.map((c) => ({ title: c.title, category: c.category as Category, url: c.verifyUrl })),
       socials: socials.map(({ label, href }) => ({ label, href })),
     };
   } catch (error) {

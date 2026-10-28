@@ -29,6 +29,11 @@ function personJsonLd(locale: Locale, content: Portfolio) {
     address: { "@type": "PostalAddress", addressLocality: "Abidjan", addressCountry: "CI" },
     knowsAbout: content.stack.map((s) => s.name),
     knowsLanguage: ["fr", "en"],
+    hasCredential: content.certifications.map((c) => ({
+      "@type": "EducationalOccupationalCredential",
+      name: c.title,
+      url: c.url,
+    })),
     sameAs: content.socials.map((s) => s.href).filter((href) => href.startsWith("http")),
   };
 }
@@ -51,7 +56,7 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
       <Header locale={lang} t={t} />
       <main className="relative z-10">
         <Hero t={t.hero} roles={content.roles} stats={content.stats} stack={content.stack} />
-        <Expertise t={t.expertise} items={content.expertise} />
+        <Expertise t={t.expertise} items={content.expertise} certifications={content.certifications} />
         <Projects t={t.projects} projects={content.projects} />
         <Pipeline t={t.pipeline} steps={content.pipeline} />
         <Timeline t={t.timeline} entries={content.timeline} />

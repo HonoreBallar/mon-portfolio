@@ -15,7 +15,7 @@ export const EXPERTISE_EN = [
   },
   {
     title: "Artificial intelligence",
-    text: "RAG systems in production that let users query a document corpus in natural language: ingestion, chunking, embeddings, semantic search and LLM integration via API. Currently designing AI agents.",
+    text: "RAG systems in production that let users query a document corpus in natural language: ingestion, chunking, embeddings, semantic search and LLM integration via API. Designing AI agents with LangGraph, CrewAI and MCP.",
   },
   {
     title: "DevOps & deployment",
@@ -83,7 +83,7 @@ export const TIMELINE_EN = [
   {
     period: "2026",
     title: "IBM Certifications · Coursera",
-    text: "IBM RAG and Agentic AI, IBM DevOps, Cloud and Agile Foundations, IBM Front-End Developer, and Mobile App Development, UX and Publishing (SkillUp).",
+    text: "Five IBM Professional Certificates (RAG and Agentic AI, Full Stack, Front-End, Back-End, DevOps and Software Engineering) and the Mobile App Development, UX and Publishing specialization (SkillUp).",
   },
   {
     period: "2014 — 2019",

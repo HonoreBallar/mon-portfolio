@@ -24,7 +24,12 @@ const fr = {
     ctaProjects: "Voir mes projets",
     ctaContact: "Me contacter",
   },
-  expertise: { kicker: "01 — Expertise", title: ["Trois mondes, une seule", "personne pour les relier."] },
+  expertise: {
+    kicker: "01 — Expertise",
+    title: ["Trois mondes, une seule", "personne pour les relier."],
+    certified: "Certifié",
+    verify: "Vérifier",
+  },
   projects: {
     kicker: "02 — Projets",
     title: ["Des projets qui tournent", "en production."],
@@ -86,7 +91,12 @@ const en: Dictionary = {
     ctaProjects: "See my projects",
     ctaContact: "Contact me",
   },
-  expertise: { kicker: "01 — Expertise", title: ["Three worlds, one", "person to connect them."] },
+  expertise: {
+    kicker: "01 — Expertise",
+    title: ["Three worlds, one", "person to connect them."],
+    certified: "Certified",
+    verify: "Verify",
+  },
   projects: {
     kicker: "02 — Projects",
     title: ["Projects running", "in production."],

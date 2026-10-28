@@ -15,6 +15,13 @@
       "when": 1793187799426,
       "tag": "0001_english_content",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1793203725595,
+      "tag": "0002_certifications",
+      "breakpoints": true
     }
   ]
 }
