@@ -1,20 +1,18 @@
-"use client";
-
-import { useState } from "react";
 import type { Dictionary } from "@/i18n/dictionaries";
 import { CATEGORIES, type Category, type Portfolio } from "@/lib/data";
+import ProjectFilters, { ALL } from "./ProjectFilters";
 import { Reveal, SectionHeading, Tag } from "./ui";
 
 const hasLink = (href: string) => href !== "" && href !== "#";
-
-const ALL = "all";
+const GRID_ID = "projects-grid";
 
 export default function Projects({ t, projects }: { t: Dictionary["projects"]; projects: Portfolio["projects"] }) {
+  const label = (c: Category) => t.categories[c] ?? c;
   // Only offer filters for categories that have at least one project
-  const FILTERS: (typeof ALL | Category)[] = [ALL, ...CATEGORIES.filter((c) => projects.some((p) => p.category === c))];
-  const [filter, setFilter] = useState<(typeof FILTERS)[number]>(ALL);
-  const list = projects.filter((p) => filter === ALL || p.category === filter);
-  const label = (f: (typeof FILTERS)[number]) => (f === ALL ? t.all : (t.categories[f] ?? f));
+  const filters = [
+    { value: ALL, label: t.all },
+    ...CATEGORIES.filter((c) => projects.some((p) => p.category === c)).map((c) => ({ value: c, label: label(c) })),
+  ];
 
   return (
     <section id="projets" className="relative scroll-mt-20 pt-[160px]">
@@ -26,25 +24,13 @@ export default function Projects({ t, projects }: { t: Dictionary["projects"]; p
           </SectionHeading>
 
           <Reveal className="flex flex-wrap gap-2" delay={100}>
-            {FILTERS.map((f) => (
-              <button
-                key={f}
-                onClick={() => setFilter(f)}
-                className={`h-11 rounded-full px-[18px] font-mono text-[14px] transition ${
-                  filter === f
-                    ? "bg-cyan font-medium text-[#04121a] shadow-[0_0_20px_rgba(34,211,238,0.35)]"
-                    : "border border-white/10 bg-white/[0.02] text-[#d5d9e4] hover:border-cyan/40 hover:text-cyan"
-                }`}
-              >
-                {label(f)}
-              </button>
-            ))}
+            <ProjectFilters gridId={GRID_ID} filters={filters} />
           </Reveal>
         </div>
 
-        <div className="mt-[48px] grid gap-7 md:grid-cols-2 lg:grid-cols-3">
-          {list.map((p, i) => (
-            <Reveal key={p.title} delay={(i % 3) * 120}>
+        <div id={GRID_ID} className="mt-[48px] grid gap-7 md:grid-cols-2 lg:grid-cols-3">
+          {projects.map((p, i) => (
+            <Reveal key={p.title} delay={(i % 3) * 120} data-category={p.category}>
               <article className="group flex h-full flex-col overflow-hidden rounded-[20px] border border-white/[0.08] bg-[#090b15] transition duration-500 hover:-translate-y-1.5 hover:border-white/15">
                 <div className="grid-bg relative h-[230px] overflow-hidden border-b border-white/[0.06] bg-[#0b0e1c]">
                   <div

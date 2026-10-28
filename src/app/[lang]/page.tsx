@@ -6,7 +6,8 @@ import Projects from "@/components/Projects";
 import Pipeline from "@/components/Pipeline";
 import Timeline from "@/components/Timeline";
 import Contact from "@/components/Contact";
-import { Starfield } from "@/components/ui";
+import RevealObserver from "@/components/RevealObserver";
+import { Starfield } from "@/components/Starfield";
 import { hasLocale, localePath, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import type { Portfolio } from "@/lib/data";
@@ -46,6 +47,7 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd(lang, content)).replace(/</g, "\\u003c") }}
       />
       <Starfield />
+      <RevealObserver />
       <Header locale={lang} t={t} />
       <main className="relative z-10">
         <Hero t={t.hero} roles={content.roles} stats={content.stats} stack={content.stack} />

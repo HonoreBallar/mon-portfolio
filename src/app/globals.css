@@ -7,7 +7,8 @@
   --line: rgba(255, 255, 255, 0.07);
   --text: #f4f6fb;
   --muted: #9aa1b5;
-  --dim: #6b7287;
+  /* 5.3:1 on --bg (WCAG AA) */
+  --dim: #7c8398;
   --cyan: #22d3ee;
   --violet: #a78bfa;
   --green: #34d399;
@@ -92,11 +93,20 @@ body {
   50% { opacity: 0; }
 }
 
+/* Halo animated with transform/opacity only, so it runs on the GPU without repainting */
 @keyframes pulse-dot {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.6); }
-  50% { box-shadow: 0 0 0 5px rgba(52, 211, 153, 0); }
+  0% { transform: scale(1); opacity: 0.6; }
+  70%, 100% { transform: scale(3.5); opacity: 0; }
 }
-.pulse-dot { animation: pulse-dot 2s ease-in-out infinite; }
+.pulse-dot { position: relative; }
+.pulse-dot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: rgba(52, 211, 153, 0.6);
+  animation: pulse-dot 2s ease-out infinite;
+}
 
 @keyframes float {
   0%, 100% { transform: translateY(0); }
@@ -119,11 +129,12 @@ body {
   50% { opacity: 0.9; }
 }
 
+/* Moves a track-wide wrapper (translateX(100%) = track width) instead of animating "left" */
 @keyframes travel {
-  0% { left: 0%; opacity: 0; }
+  0% { transform: translateX(0); opacity: 0; }
   8% { opacity: 1; }
   92% { opacity: 1; }
-  100% { left: 100%; opacity: 0; }
+  100% { transform: translateX(100%); opacity: 0; }
 }
 
 /* Grid used in project thumbnails */

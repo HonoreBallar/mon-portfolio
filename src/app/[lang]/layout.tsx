@@ -44,8 +44,13 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[la
   return (
     <html lang={lang} data-scroll-behavior="smooth" className={fontClasses}>
       <body>
+        {/* Without JavaScript, the fade-in blocks stay visible */}
+        <noscript>
+          <style>{".reveal{opacity:1;transform:none}"}</style>
+        </noscript>
         {children}
-        <Analytics />
+        {/* The analytics script only exists on Vercel */}
+        {process.env.VERCEL && <Analytics />}
       </body>
     </html>
   );

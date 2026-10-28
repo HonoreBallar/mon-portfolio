@@ -1,5 +1,7 @@
 # Portfolio — Amounan Kouadjo Honoré
 
+[![CI](https://github.com/HonoreBallar/mon-portfolio/actions/workflows/ci.yml/badge.svg)](https://github.com/HonoreBallar/mon-portfolio/actions/workflows/ci.yml)
+
 Portfolio et back-office dans une seule application **Next.js 16** (App Router, Cache Components) :
 
 - **Site public** : contenu lu dans PostgreSQL et mis en cache (`"use cache"`, tag `portfolio`), avec un contenu de secours dans `src/lib/data.ts` si la base est injoignable.
@@ -84,6 +86,16 @@ puis déclarer le champ dans `src/lib/admin/resources.ts` (et la table dans `src
 2. **docker** : build de l'image de production et de l'image de migration (cache GitHub Actions).
 3. **migrate-production** (push sur `master` uniquement) : applique les migrations sur la base de production si le secret
    `DATABASE_URL` est défini dans l'environnement GitHub `production`.
+
+## Qualité
+
+- **Lighthouse CI** (job `lighthouse`) audite `/` et `/en` en mobile à chaque push, 3 fois par page (médiane).
+  La CI échoue sous 95 en accessibilité, bonnes pratiques et SEO ; la performance déclenche un avertissement sous 90.
+  Les rapports HTML sont téléchargeables dans l'onglet *Actions* (artefact `lighthouse-reports`).
+- Dernière mesure en local : **100 / 100 / 100 / 100** sur ordinateur ; en mobile, 100 en accessibilité,
+  bonnes pratiques et SEO, et environ 90 en performance (le score mobile local sous Windows est pessimiste).
+- Accessibilité : contrastes AA, `aria-pressed` sur les filtres, `aria-expanded` sur le menu mobile,
+  animations désactivées avec `prefers-reduced-motion`.
 
 ## Déploiement : Vercel + Neon
 

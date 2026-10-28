@@ -43,3 +43,6 @@ next-env.d.ts
 
 # Vercel CLI project link
 .vercel
+
+# Lighthouse CI reports
+/.lighthouseci

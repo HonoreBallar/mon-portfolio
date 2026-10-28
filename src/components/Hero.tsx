@@ -1,38 +1,6 @@
-"use client";
-
-import { useEffect, useState } from "react";
 import type { Dictionary } from "@/i18n/dictionaries";
 import type { Portfolio } from "@/lib/data";
-
-function Typewriter({ roles }: { roles: Portfolio["roles"] }) {
-  const [text, setText] = useState("");
-  const [index, setIndex] = useState(0);
-  const [deleting, setDeleting] = useState(false);
-
-  useEffect(() => {
-    if (roles.length === 0) return;
-    const word = roles[index % roles.length];
-    let delay = deleting ? 35 : 75;
-    if (!deleting && text === word) delay = 2200;
-    if (deleting && text === "") delay = 300;
-
-    const t = setTimeout(() => {
-      if (!deleting && text === word) setDeleting(true);
-      else if (deleting && text === "") {
-        setDeleting(false);
-        setIndex((i) => i + 1);
-      } else setText(word.slice(0, text.length + (deleting ? -1 : 1)));
-    }, delay);
-    return () => clearTimeout(t);
-  }, [text, deleting, index, roles]);
-
-  return (
-    <p className="font-mono text-[18px] text-text sm:text-[24px]">
-      <span className="text-cyan">~/portfolio $</span> {text}
-      <span className="caret ml-1" />
-    </p>
-  );
-}
+import Typewriter from "./Typewriter";
 
 const LABELS = [
   { name: "Python", left: 91, top: 80, delay: "0s" },
@@ -80,7 +48,7 @@ function Orb() {
       {LABELS.map((l) => (
         <span
           key={l.name}
-          className="float absolute rounded-lg border border-white/10 bg-[#0c0f1c]/90 px-3.5 py-2 font-mono text-[13px] font-semibold text-text shadow-[0_8px_30px_rgba(0,0,0,0.4)] backdrop-blur"
+          className="float absolute rounded-lg border border-white/10 bg-[#0c0f1c]/90 px-3.5 py-2 font-mono text-[13px] font-semibold text-text shadow-[0_8px_30px_rgba(0,0,0,0.4)]"
           style={{ left: l.left, top: l.top, animationDelay: l.delay }}
         >
           {l.name}
@@ -168,7 +136,8 @@ export default function Hero({
             {t.tagline.after}
           </p>
 
-          <div className="mt-6">
+          {/* Height reserved for two lines on mobile, so the typing does not shift the page */}
+          <div className="mt-6 min-h-[54px] sm:min-h-[36px]">
             <Typewriter roles={roles} />
           </div>
 

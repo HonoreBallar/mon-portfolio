@@ -10,8 +10,9 @@ const switchClass =
 export default function Header({ locale, t }: { locale: Locale; t: Pick<Dictionary, "nav" | "header"> }) {
   const otherLocale: Locale = locale === "fr" ? "en" : "fr";
   const switchLink = (
-    <a href={localePath(otherLocale)} hrefLang={otherLocale} aria-label={t.header.switchLabel} className={switchClass}>
+    <a href={localePath(otherLocale)} hrefLang={otherLocale} className={switchClass}>
       {t.header.switchShort}
+      <span className="sr-only"> — {t.header.switchLabel}</span>
     </a>
   );
 
@@ -29,8 +30,8 @@ export default function Header({ locale, t }: { locale: Locale; t: Pick<Dictiona
     <header
       className={`fixed inset-x-0 top-0 z-50 border-b transition-colors duration-300 ${
         scrolled
-          ? "border-white/[0.06] bg-[#05060b]/80 backdrop-blur-xl"
-          : "border-white/[0.04] bg-[#05060b]/40 backdrop-blur-md"
+          ? "border-white/[0.06] bg-[#05060b]/95"
+          : "border-white/[0.04] bg-[#05060b]/70"
       }`}
     >
       <div className="container-x flex h-[74px] items-center justify-between">
@@ -65,6 +66,8 @@ export default function Header({ locale, t }: { locale: Locale; t: Pick<Dictiona
           <button
             aria-label={t.header.menu}
             onClick={() => setOpen((o) => !o)}
+            aria-expanded={open}
+            aria-controls="mobile-menu"
             className="grid h-10 w-10 place-items-center rounded-lg border border-white/10"
           >
             <span className="relative block h-3 w-5">
@@ -76,7 +79,7 @@ export default function Header({ locale, t }: { locale: Locale; t: Pick<Dictiona
       </div>
 
       {open && (
-        <nav className="container-x flex flex-col gap-1 pb-5 md:hidden">
+        <nav id="mobile-menu" className="container-x flex flex-col gap-1 pb-5 md:hidden">
           {t.nav.map((item) => (
             <a
               key={item.href}
