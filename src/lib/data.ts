@@ -5,11 +5,12 @@ export const NAV = [
   { label: "Parcours", href: "#parcours" },
 ];
 
+// Specialties typed under the tagline (the job title is already in the H1)
 export const ROLES = [
-  "Développeur IA full-stack",
-  "Intégrateur LLM & RAG",
-  "Ingénieur DevOps",
-  "Développeur web & mobile",
+  "Intégration LLM & RAG",
+  "Python · FastAPI · Next.js",
+  "DevOps & CI/CD",
+  "Applications web & mobile",
 ];
 
 export const STATS = [
@@ -130,6 +131,16 @@ export const PROJECTS: {
     glow: "245, 158, 11",
     demo: "#",
     source: "#",
+  },
+  {
+    title: "Mon portfolio — Next.js & admin sur mesure",
+    description:
+      "Projet personnel · Portfolio et back-office réunis dans une seule application Next.js 16 : admin sur mesure (authentification, gestion de tout le contenu, messages de contact), PostgreSQL avec Drizzle ORM, image Docker et CI/CD GitHub Actions, déployé sur Vercel avec Neon.",
+    category: "Fullstack",
+    tags: ["Next.js", "TypeScript", "PostgreSQL", "Drizzle", "Docker", "GitHub Actions"],
+    glow: "34, 211, 238",
+    demo: "https://mon-portfolio-lyart-pi.vercel.app",
+    source: "https://github.com/HonoreBallar/mon-portfolio",
   },
 ];
 

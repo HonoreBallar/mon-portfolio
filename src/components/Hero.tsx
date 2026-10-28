@@ -149,24 +149,29 @@ export default function Hero({
             Disponible pour de nouveaux projets — Abidjan / Remote
           </div>
 
-          <h1 className="mt-7 text-[40px] font-bold leading-[1.05] tracking-[-0.035em] text-text sm:text-[56px] lg:text-[72px]">
-            Je construis des
-            <br />
-            produits
-            <br />
-            <span className="shimmer-text">intelligents,</span>
-            <br />
-            du code à la production.
+          <p className="mt-7 font-mono text-[15px] text-cyan">~/portfolio $ whoami</p>
+          <h1 className="mt-3 font-bold tracking-[-0.035em] text-text">
+            <span className="block text-[40px] leading-[1.05] sm:text-[56px] lg:text-[72px]">
+              Honoré Amounan<span className="text-cyan">.</span>
+            </span>
+            <span className="sr-only"> — </span>
+            <span className="mt-3 block font-mono text-[16px] font-medium tracking-normal text-muted sm:text-[19px]">
+              Développeur IA full-stack &amp; DevOps · Abidjan
+            </span>
           </h1>
 
-          <div className="mt-8">
+          <p className="mt-8 max-w-[720px] text-[28px] font-bold leading-[1.15] tracking-[-0.025em] text-text sm:text-[34px] lg:text-[40px]">
+            Je construis des produits <span className="shimmer-text">intelligents</span>, du code à la production.
+          </p>
+
+          <div className="mt-6">
             <Typewriter roles={roles} />
           </div>
 
-          <p className="mt-9 max-w-[580px] text-[17px] leading-[1.7] text-muted sm:text-[18px]">
-            Développeur IA full-stack & DevOps avec plus de 3 ans d’expérience. Je conçois des solutions qui exploitent les
-            modèles de langage — dont un système RAG en production — pour faciliter l’accès à l’information, automatiser
-            les tâches et améliorer les processus métier.
+          <p className="mt-7 max-w-[580px] text-[17px] leading-[1.7] text-muted sm:text-[18px]">
+            Plus de 3 ans d’expérience à concevoir des solutions qui exploitent les modèles de langage — dont un
+            système RAG en production — pour faciliter l’accès à l’information, automatiser les tâches et améliorer les
+            processus métier.
           </p>
 
           <div className="mt-8 flex flex-wrap gap-3.5">
