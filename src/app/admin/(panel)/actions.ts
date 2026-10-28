@@ -44,13 +44,14 @@ export async function saveSettings(_prev: FormState, formData: FormData): Promis
   if (!data) return state;
 
   const db = getDb();
-  const values = data as { contactEmail: string; roles: string[] };
+  const values = data as { contactEmail: string; roles: string[]; rolesEn: string[] };
   const [current] = await db.select({ id: tables.siteSettings.id }).from(tables.siteSettings).limit(1);
   if (current) await db.update(tables.siteSettings).set(values).where(eq(tables.siteSettings.id, current.id));
   else await db.insert(tables.siteSettings).values(values);
 
   updateTag(PORTFOLIO_TAG);
-  return { values: { contactEmail: values.contactEmail, roles: values.roles.join(", ") }, saved: true };
+  const list = (roles: string[]) => roles.join(", ");
+  return { values: { contactEmail: values.contactEmail, roles: list(values.roles), rolesEn: list(values.rolesEn) }, saved: true };
 }
 
 export async function setMessageRead(id: number, isRead: boolean): Promise<void> {

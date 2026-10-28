@@ -22,6 +22,20 @@ export type Resource = {
 };
 
 const position: Field = { name: "position", label: "Position", type: "number", help: "Ordre d'affichage (croissant)." };
+
+/** French field followed by its optional English version ("<name>En" column) */
+function translated(field: Field): Field[] {
+  return [
+    { ...field, label: `${field.label} (FR)` },
+    {
+      ...field,
+      name: `${field.name}En`,
+      label: `${field.label} (EN)`,
+      required: false,
+      help: "Version anglaise du site. Vide = texte français.",
+    },
+  ];
+}
 const color: Field = { name: "color", label: "Couleur", type: "color", required: true };
 
 /** Content editable in the admin; the table of each resource is in resource-tables.ts */
@@ -32,8 +46,8 @@ export const RESOURCES: Resource[] = [
     singular: "projet",
     columns: ["title", "category", "visible"],
     fields: [
-      { name: "title", label: "Titre", type: "text", required: true, max: 150 },
-      { name: "description", label: "Description", type: "textarea", required: true },
+      ...translated({ name: "title", label: "Titre", type: "text", required: true, max: 150 }),
+      ...translated({ name: "description", label: "Description", type: "textarea", required: true }),
       { name: "category", label: "Catégorie", type: "select", required: true, options: CATEGORIES },
       { name: "tags", label: "Tags", type: "tags", help: "Séparés par des virgules." },
       { name: "glow", label: "Couleur du halo", type: "text", required: true, max: 20, help: "Format R, G, B — ex. 139, 92, 246" },
@@ -49,9 +63,9 @@ export const RESOURCES: Resource[] = [
     singular: "étape du parcours",
     columns: ["period", "title"],
     fields: [
-      { name: "period", label: "Période", type: "text", required: true, max: 60 },
-      { name: "title", label: "Titre", type: "text", required: true, max: 150 },
-      { name: "text", label: "Texte", type: "textarea", required: true },
+      ...translated({ name: "period", label: "Période", type: "text", required: true, max: 60 }),
+      ...translated({ name: "title", label: "Titre", type: "text", required: true, max: 150 }),
+      ...translated({ name: "text", label: "Texte", type: "textarea", required: true }),
       position,
     ],
   },
@@ -61,8 +75,8 @@ export const RESOURCES: Resource[] = [
     singular: "expertise",
     columns: ["title", "icon"],
     fields: [
-      { name: "title", label: "Titre", type: "text", required: true, max: 100 },
-      { name: "text", label: "Texte", type: "textarea", required: true },
+      ...translated({ name: "title", label: "Titre", type: "text", required: true, max: 100 }),
+      ...translated({ name: "text", label: "Texte", type: "textarea", required: true }),
       { name: "tags", label: "Tags", type: "tags", help: "Séparés par des virgules." },
       { name: "icon", label: "Icône", type: "select", required: true, options: ["code", "chip", "cloud"] },
       color,
@@ -83,7 +97,7 @@ export const RESOURCES: Resource[] = [
     columns: ["value", "label"],
     fields: [
       { name: "value", label: "Valeur", type: "text", required: true, max: 30 },
-      { name: "label", label: "Libellé", type: "text", required: true, max: 100 },
+      ...translated({ name: "label", label: "Libellé", type: "text", required: true, max: 100 }),
       position,
     ],
   },
@@ -94,8 +108,8 @@ export const RESOURCES: Resource[] = [
     columns: ["number", "title"],
     fields: [
       { name: "number", label: "Numéro", type: "text", required: true, max: 5 },
-      { name: "title", label: "Titre", type: "text", required: true, max: 60 },
-      { name: "text", label: "Texte", type: "text", required: true, max: 255 },
+      ...translated({ name: "title", label: "Titre", type: "text", required: true, max: 60 }),
+      ...translated({ name: "text", label: "Texte", type: "text", required: true, max: 255 }),
       color,
       position,
     ],
@@ -115,7 +129,13 @@ export const RESOURCES: Resource[] = [
 
 export const SETTINGS_FIELDS: Field[] = [
   { name: "contactEmail", label: "Email de contact", type: "text", required: true, max: 180 },
-  { name: "roles", label: "Rôles (animation du hero)", type: "tags", help: "Séparés par des virgules." },
+  { name: "roles", label: "Spécialités animées du hero (FR)", type: "tags", help: "Séparées par des virgules." },
+  {
+    name: "rolesEn",
+    label: "Spécialités animées du hero (EN)",
+    type: "tags",
+    help: "Séparées par des virgules. Vide = version française.",
+  },
 ];
 
 export function findResource(key: string): Resource | undefined {

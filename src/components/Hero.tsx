@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import type { Dictionary } from "@/i18n/dictionaries";
 import type { Portfolio } from "@/lib/data";
 
 function Typewriter({ roles }: { roles: Portfolio["roles"] }) {
@@ -126,10 +127,11 @@ function Marquee({ stack }: { stack: Portfolio["stack"] }) {
 }
 
 export default function Hero({
+  t,
   roles,
   stats,
   stack,
-}: Pick<Portfolio, "roles" | "stats" | "stack">) {
+}: Pick<Portfolio, "roles" | "stats" | "stack"> & { t: Dictionary["hero"] }) {
   return (
     <section id="top" className="relative overflow-hidden">
       {/* Teal glow */}
@@ -146,7 +148,7 @@ export default function Hero({
         <div className="relative z-10 max-w-[780px]">
           <div className="inline-flex items-center gap-2.5 rounded-full border border-white/10 bg-white/[0.03] px-[14px] py-[7px] font-mono text-[13px] text-[#c3c8d6]">
             <span className="pulse-dot h-2 w-2 rounded-full bg-green" />
-            Disponible pour de nouveaux projets — Abidjan / Remote
+            {t.badge}
           </div>
 
           <p className="mt-7 font-mono text-[15px] text-cyan">~/portfolio $ whoami</p>
@@ -156,12 +158,14 @@ export default function Hero({
             </span>
             <span className="sr-only"> — </span>
             <span className="mt-3 block font-mono text-[16px] font-medium tracking-normal text-muted sm:text-[19px]">
-              Développeur IA full-stack &amp; DevOps · Abidjan
+              {t.role}
             </span>
           </h1>
 
           <p className="mt-8 max-w-[720px] text-[28px] font-bold leading-[1.15] tracking-[-0.025em] text-text sm:text-[34px] lg:text-[40px]">
-            Je construis des produits <span className="shimmer-text">intelligents</span>, du code à la production.
+            {t.tagline.before}
+            <span className="shimmer-text">{t.tagline.highlight}</span>
+            {t.tagline.after}
           </p>
 
           <div className="mt-6">
@@ -169,9 +173,7 @@ export default function Hero({
           </div>
 
           <p className="mt-7 max-w-[580px] text-[17px] leading-[1.7] text-muted sm:text-[18px]">
-            Plus de 3 ans d’expérience à concevoir des solutions qui exploitent les modèles de langage — dont un
-            système RAG en production — pour faciliter l’accès à l’information, automatiser les tâches et améliorer les
-            processus métier.
+            {t.mission}
           </p>
 
           <div className="mt-8 flex flex-wrap gap-3.5">
@@ -179,7 +181,7 @@ export default function Hero({
               href="#projets"
               className="group inline-flex h-[53px] items-center gap-3 rounded-[10px] bg-cyan px-[25px] text-[16px] font-semibold text-[#04121a] shadow-[0_0_28px_rgba(34,211,238,0.35)] transition hover:-translate-y-0.5 hover:shadow-[0_0_40px_rgba(34,211,238,0.55)]"
             >
-              Voir mes projets
+              {t.ctaProjects}
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="transition group-hover:translate-x-1">
                 <path d="M5 12h14M13 6l6 6-6 6" />
               </svg>
@@ -192,7 +194,7 @@ export default function Hero({
                 <rect x="3" y="5" width="18" height="14" rx="2" />
                 <path d="M3 7l9 6 9-6" />
               </svg>
-              Me contacter
+              {t.ctaContact}
             </a>
           </div>
 

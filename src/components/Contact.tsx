@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import type { Dictionary } from "@/i18n/dictionaries";
 import type { Portfolio } from "@/lib/data";
 import { Reveal } from "./ui";
 
@@ -9,14 +10,16 @@ const field =
 
 type Status = "idle" | "sending" | "sent" | "error";
 
-const BUTTON_LABEL: Record<Status, string> = {
-  idle: "Envoyer le message",
-  sending: "Envoi en cours…",
-  sent: "Message envoyé ✓",
-  error: "Envoyer le message",
-};
-
-export default function Contact({ email, socials }: { email: string; socials: Portfolio["socials"] }) {
+export default function Contact({
+  t,
+  email,
+  socials,
+}: {
+  t: Dictionary["contact"];
+  email: string;
+  socials: Portfolio["socials"];
+}) {
+  const buttonLabel: Record<Status, string> = { ...t.button, error: t.button.idle };
   const [status, setStatus] = useState<Status>("idle");
   const [error, setError] = useState("");
 
@@ -40,13 +43,13 @@ export default function Contact({ email, socials }: { email: string; socials: Po
       }
 
       setStatus("error");
-      if (res.status === 429) setError("Trop de messages envoyés. Réessayez dans une heure.");
-      else if (res.status === 422) setError("Vérifiez votre email et votre message (10 caractères minimum).");
-      else if (res.status === 503) setError("Le service est momentanément indisponible. Réessayez dans une minute.");
-      else setError("Une erreur est survenue. Réessayez ou écrivez-moi directement par email.");
+      if (res.status === 429) setError(t.errors.tooMany);
+      else if (res.status === 422) setError(t.errors.invalid);
+      else if (res.status === 503) setError(t.errors.unavailable);
+      else setError(t.errors.generic);
     } catch {
       setStatus("error");
-      setError("Impossible d’envoyer le message. Réessayez ou écrivez-moi directement par email.");
+      setError(t.errors.network);
     }
   }
 
@@ -63,14 +66,14 @@ export default function Contact({ email, socials }: { email: string; socials: Po
 
             <div className="relative grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-14">
               <div className="min-w-0">
-                <p className="font-mono text-[14px] text-cyan">05 — Contact</p>
+                <p className="font-mono text-[14px] text-cyan">{t.kicker}</p>
                 <h2 className="mt-4 text-[28px] font-bold sm:text-[36px] leading-[1.1] tracking-[-0.02em] text-text md:text-[46px]">
-                  Un projet ambitieux ?
+                  {t.title[0]}
                   <br />
-                  Construisons-le.
+                  {t.title[1]}
                 </h2>
                 <p className="mt-6 max-w-[560px] text-[16px] sm:mt-7 sm:text-[18px] leading-[1.6] text-muted">
-                  Je réponds rapidement. Parlons de votre produit, de votre assistant IA ou de vos déploiements.
+                  {t.text}
                 </p>
                 <a
                   href={`mailto:${email}`}
@@ -98,14 +101,14 @@ export default function Contact({ email, socials }: { email: string; socials: Po
               </div>
 
               <form onSubmit={onSubmit} className="flex min-w-0 flex-col">
-                <label htmlFor="name" className="text-[14px] font-medium text-[#c3c8d6]">Nom</label>
-                <input id="name" name="name" required placeholder="Votre nom" className={`${field} mt-2.5 h-[52px]`} />
+                <label htmlFor="name" className="text-[14px] font-medium text-[#c3c8d6]">{t.name}</label>
+                <input id="name" name="name" required placeholder={t.namePlaceholder} className={`${field} mt-2.5 h-[52px]`} />
 
-                <label htmlFor="email" className="mt-5 text-[14px] font-medium text-[#c3c8d6]">Email</label>
-                <input id="email" name="email" type="email" required placeholder="vous@entreprise.com" className={`${field} mt-2.5 h-[52px]`} />
+                <label htmlFor="email" className="mt-5 text-[14px] font-medium text-[#c3c8d6]">{t.email}</label>
+                <input id="email" name="email" type="email" required placeholder={t.emailPlaceholder} className={`${field} mt-2.5 h-[52px]`} />
 
-                <label htmlFor="message" className="mt-5 text-[14px] font-medium text-[#c3c8d6]">Votre projet</label>
-                <textarea id="message" name="message" required minLength={10} rows={4} placeholder="Décrivez votre idée..." className={`${field} mt-2.5 min-h-[110px] resize-y py-3.5`} />
+                <label htmlFor="message" className="mt-5 text-[14px] font-medium text-[#c3c8d6]">{t.message}</label>
+                <textarea id="message" name="message" required minLength={10} rows={4} placeholder={t.messagePlaceholder} className={`${field} mt-2.5 min-h-[110px] resize-y py-3.5`} />
 
                 {/* Honeypot: invisible to people, filled by spam bots */}
                 <input type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden className="absolute -left-[9999px] h-0 w-0 opacity-0" />
@@ -115,7 +118,7 @@ export default function Contact({ email, socials }: { email: string; socials: Po
                   disabled={status === "sending"}
                   className="mt-4 h-[53px] rounded-[12px] bg-cyan text-[16px] font-semibold text-[#04121a] shadow-[0_0_28px_rgba(34,211,238,0.3)] transition hover:-translate-y-0.5 hover:shadow-[0_0_40px_rgba(34,211,238,0.5)] disabled:cursor-wait disabled:opacity-70"
                 >
-                  {BUTTON_LABEL[status]}
+                  {buttonLabel[status]}
                 </button>
                 {error && (
                   <p role="alert" className="mt-3 text-[14px] text-[#f87171]">

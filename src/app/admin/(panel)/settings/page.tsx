@@ -18,7 +18,11 @@ export default async function Settings() {
       <div className={`${card} mt-8 p-6 sm:p-8`}>
         <ResourceForm
           fields={SETTINGS_FIELDS}
-          initial={{ contactEmail: settings?.contactEmail ?? "", roles: settings?.roles.join(", ") ?? "" }}
+          initial={{
+            contactEmail: settings?.contactEmail ?? "",
+            roles: settings?.roles.join(", ") ?? "",
+            rolesEn: settings?.rolesEn?.join(", ") ?? "",
+          }}
           action={saveSettings}
         />
       </div>

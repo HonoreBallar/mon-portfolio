@@ -1,3 +1,4 @@
+import type { Dictionary } from "@/i18n/dictionaries";
 import type { Portfolio } from "@/lib/data";
 import { Reveal, SectionHeading, Tag } from "./ui";
 
@@ -13,13 +14,13 @@ const ICONS = {
   cloud: <path d="M7 18h10a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.2 9.6 4.2 4.2 0 0 0 7 18z" />,
 };
 
-export default function Expertise({ items }: { items: Portfolio["expertise"] }) {
+export default function Expertise({ t, items }: { t: Dictionary["expertise"]; items: Portfolio["expertise"] }) {
   return (
     <section id="expertise" className="relative scroll-mt-20 pt-[140px]">
       <div className="container-x">
-        <SectionHeading kicker="01 — Expertise">
-          Trois mondes, une seule
-          <br className="hidden sm:block" /> personne pour les relier.
+        <SectionHeading kicker={t.kicker}>
+          {t.title[0]}
+          <br className="hidden sm:block" /> {t.title[1]}
         </SectionHeading>
 
         <div className="mt-[60px] grid gap-6 md:grid-cols-3">

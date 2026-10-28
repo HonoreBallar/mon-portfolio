@@ -1,12 +1,13 @@
+import type { Dictionary } from "@/i18n/dictionaries";
 import type { Portfolio } from "@/lib/data";
 import { Reveal, SectionHeading } from "./ui";
 
-export default function Timeline({ entries }: { entries: Portfolio["timeline"] }) {
+export default function Timeline({ t, entries }: { t: Dictionary["timeline"]; entries: Portfolio["timeline"] }) {
   return (
     <section id="parcours" className="relative scroll-mt-20 pt-[175px]">
       <div className="container-x">
         <div className="mx-auto max-w-[980px]">
-          <SectionHeading kicker="04 — Parcours">Le chemin jusqu’ici.</SectionHeading>
+          <SectionHeading kicker={t.kicker}>{t.title}</SectionHeading>
 
           <div className="relative mt-12 pl-8 sm:pl-[38px]">
             <div

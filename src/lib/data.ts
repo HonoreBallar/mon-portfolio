@@ -1,10 +1,3 @@
-export const NAV = [
-  { label: "Expertise", href: "#expertise" },
-  { label: "Projets", href: "#projets" },
-  { label: "DevOps", href: "#devops" },
-  { label: "Parcours", href: "#parcours" },
-];
-
 // Specialties typed under the tagline (the job title is already in the H1)
 export const ROLES = [
   "Intégration LLM & RAG",

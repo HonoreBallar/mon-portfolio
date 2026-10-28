@@ -1,6 +1,7 @@
 import { boolean, index, integer, json, pgTable, text, timestamp, uniqueIndex, varchar } from "drizzle-orm/pg-core";
 
 // Same tables and columns as the former Symfony backend, so existing data can be imported as is.
+// "*En" columns hold the English version; when empty, the French text is shown.
 
 const id = () => integer("id").primaryKey().generatedByDefaultAsIdentity();
 const position = () => integer("position").notNull().default(0);
@@ -9,12 +10,14 @@ export const siteSettings = pgTable("site_settings", {
   id: id(),
   contactEmail: varchar("contact_email", { length: 180 }).notNull(),
   roles: json("roles").$type<string[]>().notNull(),
+  rolesEn: json("roles_en").$type<string[]>(),
 });
 
 export const stats = pgTable("stat", {
   id: id(),
   value: varchar("value", { length: 30 }).notNull(),
   label: varchar("label", { length: 100 }).notNull(),
+  labelEn: varchar("label_en", { length: 100 }),
   position: position(),
 });
 
@@ -28,7 +31,9 @@ export const technologies = pgTable("technology", {
 export const expertise = pgTable("expertise", {
   id: id(),
   title: varchar("title", { length: 100 }).notNull(),
+  titleEn: varchar("title_en", { length: 100 }),
   text: text("text").notNull(),
+  textEn: text("text_en"),
   tags: json("tags").$type<string[]>().notNull(),
   icon: varchar("icon", { length: 10 }).notNull(),
   color: varchar("color", { length: 7 }).notNull(),
@@ -38,7 +43,9 @@ export const expertise = pgTable("expertise", {
 export const projects = pgTable("project", {
   id: id(),
   title: varchar("title", { length: 150 }).notNull(),
+  titleEn: varchar("title_en", { length: 150 }),
   description: text("description").notNull(),
+  descriptionEn: text("description_en"),
   category: varchar("category", { length: 20 }).notNull(),
   tags: json("tags").$type<string[]>().notNull(),
   glow: varchar("glow", { length: 20 }).notNull(),
@@ -52,7 +59,9 @@ export const pipelineSteps = pgTable("pipeline_step", {
   id: id(),
   number: varchar("number", { length: 5 }).notNull(),
   title: varchar("title", { length: 60 }).notNull(),
+  titleEn: varchar("title_en", { length: 60 }),
   text: varchar("text", { length: 255 }).notNull(),
+  textEn: varchar("text_en", { length: 255 }),
   color: varchar("color", { length: 7 }).notNull(),
   position: position(),
 });
@@ -60,8 +69,11 @@ export const pipelineSteps = pgTable("pipeline_step", {
 export const timelineEntries = pgTable("timeline_entry", {
   id: id(),
   period: varchar("period", { length: 60 }).notNull(),
+  periodEn: varchar("period_en", { length: 60 }),
   title: varchar("title", { length: 150 }).notNull(),
+  titleEn: varchar("title_en", { length: 150 }),
   text: text("text").notNull(),
+  textEn: text("text_en"),
   position: position(),
 });
 

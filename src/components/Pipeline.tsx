@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import type { Dictionary } from "@/i18n/dictionaries";
 import type { Portfolio } from "@/lib/data";
 import { Reveal, SectionHeading } from "./ui";
 
@@ -19,10 +20,14 @@ const LINES: { text: React.ReactNode; className: string }[] = [
   { text: <><A />docker build -t app:$GITHUB_SHA .</>, className: "text-[#9aa1b5]" },
   { text: <><A />docker compose up -d</>, className: "text-[#9aa1b5]" },
   { text: <><A />nginx -s reload</>, className: "text-[#9aa1b5]" },
-  { text: "✓ Déployé en production via GitHub Actions", className: "font-medium text-cyan" },
 ];
 
-function Terminal() {
+const DEPLOYED_CLASS = "font-medium text-cyan";
+// The last line ("deployed") is localized, so it is added in Terminal
+const TOTAL_LINES = LINES.length + 1;
+
+function Terminal({ deployed }: { deployed: string }) {
+  const lines = [...LINES, { text: deployed, className: DEPLOYED_CLASS }];
   const ref = useRef<HTMLDivElement>(null);
   const [shown, setShown] = useState(0);
 
@@ -36,7 +41,7 @@ function Terminal() {
         io.disconnect();
         timer = setInterval(() => {
           setShown((n) => {
-            if (n >= LINES.length) {
+            if (n >= TOTAL_LINES) {
               clearInterval(timer);
               return n;
             }
@@ -67,7 +72,7 @@ function Terminal() {
           <span className="ml-4 font-mono text-[13px] text-dim">deploy.sh — zsh</span>
         </div>
         <div className="min-h-[250px] px-[26px] py-[20px] font-mono text-[14px] leading-[30.5px] sm:text-[15px]">
-          {LINES.slice(0, shown).map((l, i) => (
+          {lines.slice(0, shown).map((l, i) => (
             <div key={i} className={`${l.className} animate-[fadeIn_.4s_ease]`}>
               {l.text}
             </div>
@@ -81,13 +86,13 @@ function Terminal() {
   );
 }
 
-export default function Pipeline({ steps }: { steps: Portfolio["pipeline"] }) {
+export default function Pipeline({ t, steps }: { t: Dictionary["pipeline"]; steps: Portfolio["pipeline"] }) {
   return (
     <section id="devops" className="relative scroll-mt-20 pt-[170px]">
       <div className="container-x">
-        <SectionHeading kicker="03 — Ma façon de livrer">
-          Du commit à la prod, en
-          <br className="hidden sm:block" /> pilote automatique.
+        <SectionHeading kicker={t.kicker}>
+          {t.title[0]}
+          <br className="hidden sm:block" /> {t.title[1]}
         </SectionHeading>
 
         <Reveal className="mt-12">
@@ -119,7 +124,7 @@ export default function Pipeline({ steps }: { steps: Portfolio["pipeline"] }) {
         </Reveal>
 
         <Reveal>
-          <Terminal />
+          <Terminal deployed={t.deployed} />
         </Reveal>
       </div>
     </section>
