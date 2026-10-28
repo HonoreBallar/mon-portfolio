@@ -42,6 +42,7 @@ export default function Contact({ email, socials }: { email: string; socials: Po
       setStatus("error");
       if (res.status === 429) setError("Trop de messages envoyés. Réessayez dans une heure.");
       else if (res.status === 422) setError("Vérifiez votre email et votre message (10 caractères minimum).");
+      else if (res.status === 503) setError("Le service est momentanément indisponible. Réessayez dans une minute.");
       else setError("Une erreur est survenue. Réessayez ou écrivez-moi directement par email.");
     } catch {
       setStatus("error");

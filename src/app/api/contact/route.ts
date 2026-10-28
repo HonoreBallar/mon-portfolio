@@ -30,18 +30,23 @@ export async function POST(request: Request) {
     return Response.json({ status: "sent" }, { status: 201 });
   }
 
-  const db = getDb();
-  const ipHash = clientIpHash(request);
-  const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
-  const [{ sent }] = await db
-    .select({ sent: count() })
-    .from(tables.contactMessages)
-    .where(and(eq(tables.contactMessages.ipHash, ipHash), gt(tables.contactMessages.createdAt, oneHourAgo)));
+  try {
+    const db = getDb();
+    const ipHash = clientIpHash(request);
+    const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
+    const [{ sent }] = await db
+      .select({ sent: count() })
+      .from(tables.contactMessages)
+      .where(and(eq(tables.contactMessages.ipHash, ipHash), gt(tables.contactMessages.createdAt, oneHourAgo)));
 
-  if (sent >= MAX_PER_HOUR) {
-    return Response.json({ error: "Trop de messages envoyés, réessayez plus tard." }, { status: 429, headers: { "Retry-After": "3600" } });
+    if (sent >= MAX_PER_HOUR) {
+      return Response.json({ error: "Trop de messages envoyés, réessayez plus tard." }, { status: 429, headers: { "Retry-After": "3600" } });
+    }
+
+    await db.insert(tables.contactMessages).values({ name, email, message, ipHash });
+    return Response.json({ status: "sent" }, { status: 201 });
+  } catch (error) {
+    console.error("Contact message not saved, database unavailable:", error);
+    return Response.json({ error: "Service momentanément indisponible." }, { status: 503, headers: { "Retry-After": "60" } });
   }
-
-  await db.insert(tables.contactMessages).values({ name, email, message, ipHash });
-  return Response.json({ status: "sent" }, { status: 201 });
 }
